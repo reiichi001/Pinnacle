@@ -1,0 +1,30 @@
+{
+  "name": "pinnacle",
+  "version": "0.0.1",
+  "description": "Pinnacle is a super simple discord bot to pin/unpin messages for users without having to grant them Manage Messages.",
+  "main": "pinnacle.js",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "eslint": "^7.6.0",
+    "eslint-plugin-sonarjs": "^0.5.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reiichi001/Pinnacle.git"
+  },
+  "keywords": [
+    "discord.js",
+    "bot",
+    "nodejs"
+  ],
+  "author": "Robert Baker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reiichi001/Pinnacle/issues"
+  },
+  "homepage": "https://github.com/reiichi001/Pinnacle#readme"
+}
