@@ -1,5 +1,8 @@
-const Client = require('discord.js');
 const CONFIG = require('./config.json');
+
+const {
+	Client,
+} = require('discord.js');
 
 const client = new Client({
 	disableEveryone: true,
