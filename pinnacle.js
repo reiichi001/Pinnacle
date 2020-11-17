@@ -124,7 +124,7 @@ client.on('message', async message => {
 		return;
 	}
 
-	let prefix;
+	let prefix = globalPrefix; 
 	if (message.content.startsWith(globalPrefix)) {
 		prefix = globalPrefix;
 	}
