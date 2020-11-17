@@ -85,11 +85,9 @@ client.on('raw', async event => {
 	} = event;
 	const channel = client.channels.cache.get(data.channel_id);
 	const message = await channel.messages.fetch(data.message_id);
-	const emojiKey = data.emoji.id ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
+	const emojiKey = data.emoji.id ? `<:${data.emoji.name}:${data.emoji.id}>` : data.emoji.name;
 
-	// put any useful logging/debugging here
-	console.log(`Server: "${message.guild.name}" Message: ${message.id} Event: ${event.t} Reaction: ${emojiKey}`);
-
+	// retrive the custom emoji info
 	let emoji = globalEmoji;
 	const guildEmoji = await Prefixes.findOne({
 		where: {
@@ -99,6 +97,10 @@ client.on('raw', async event => {
 	if (guildEmoji) {
 		emoji = guildEmoji.get("emoji");
 	}
+
+	// put any useful logging/debugging here
+	console.log(`Server: "${message.guild.name}" Message: ${message.id} Event: ${event.t} Reaction: ${emojiKey}`);
+	// console.log(`Emojikey: ${emojiKey} Emoji:${emoji}\n`);
 
 	if (message.pinnable && emojiKey === emoji) {
 		if (message.pinned) {
@@ -124,19 +126,14 @@ client.on('message', async message => {
 		return;
 	}
 
-	let prefix = globalPrefix; 
-	if (message.content.startsWith(globalPrefix)) {
-		prefix = globalPrefix;
-	}
-	else {
-		const guildPrefix = await Prefixes.findOne({
-			where: {
-				server: message.guild.id,
-			},
-		});
-		if (guildPrefix) {
-			prefix = guildPrefix.get("prefix");
-		}
+	let prefix = globalPrefix;
+	const guildPrefix = await Prefixes.findOne({
+		where: {
+			server: message.guild.id,
+		},
+	});
+	if (guildPrefix) {
+		prefix = guildPrefix.get("prefix");
 	}
 
 	// Checks if the bot was mentioned, with no message after it, returns the prefix.
