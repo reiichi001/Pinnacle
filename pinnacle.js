@@ -151,10 +151,12 @@ client.on('message', async message => {
 		args = message.content.slice(prefix.length).trim()
 			.split(/\s+/u);
 	}
+	/*
 	else {
 		const slice = message.content.startsWith(globalPrefix) ? globalPrefix.length : 0;
 		args = message.content.slice(slice).split(/\s+/u);
 	}
+	*/
 
 	const command = args.shift().toLowerCase();
 
