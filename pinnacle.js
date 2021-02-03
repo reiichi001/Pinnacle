@@ -144,12 +144,15 @@ client.on('message', async message => {
 	}
 
 	let args;
+	let command;
 	if (message.guild && message.content.startsWith(prefix)) {
 		if (!prefix) {
 			return;
 		}
 		args = message.content.slice(prefix.length).trim()
 			.split(/\s+/u);
+
+		command = args.shift().toLowerCase();
 	}
 	/*
 	else {
@@ -158,7 +161,7 @@ client.on('message', async message => {
 	}
 	*/
 
-	const command = args.shift().toLowerCase();
+	
 
 	if (command === 'help') {
 		message.channel.send({
