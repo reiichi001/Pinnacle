@@ -126,7 +126,7 @@ client.on('raw', async event => {
 		if (message.pinned) {
 			// remove the pin
 			message.unpin();
-			message.channel.send(`Pinncale has unpinned a message, ${message}`);
+			message.channel.send(`Pinncale has unpinned a message, ${message.url}`);
 		}
 		else {
 			// add a pin
