@@ -1,16 +1,35 @@
 /* eslint-disable max-len */
 const {
-	Client,
-} = require('discord.js');
+	Client, Collection, GatewayIntentBits, Partials,
+} = require("discord.js");
 const CONFIG = require('./config.json');
 const Sequelize = require('sequelize');
 
 const globalPrefix = CONFIG.prefix;
 const globalEmoji = CONFIG.emoji;
 
-const client = new Client({
-	disableEveryone: true,
-});
+const client = new Client(
+	{
+		allowedMentions: {
+			parse: [
+				'users',
+				// 'roles', // we probably don't need this either, but kept for posterity.
+			],
+		},
+		intents: [
+			GatewayIntentBits.Guilds,
+			GatewayIntentBits.GuildMessages,
+			GatewayIntentBits.GuildMessageReactions,
+			GatewayIntentBits.MessageContent,
+		],
+		partials: [
+			Partials.GuildMember,
+			Partials.Message,
+			Partials.Channel,
+			Partials.Reaction,
+		],
+	}
+);
 if (CONFIG.token === '') {
 	throw new Error("Please add a token file with your bot key to config.json");
 }
@@ -75,7 +94,7 @@ client.on('error', console.error);
 
 // This event handles toggling a pin if someone adds/removes the defined emoji for pins
 client.on('raw', async event => {
-	console.log("Got event: " + event);
+	// console.log("Got event: " + event);
 	// eslint-disable-next-line no-prototype-builtins
 	if (!events.hasOwnProperty(event.t)) {
 		return;
@@ -166,7 +185,7 @@ client.on('messageCreate', async message => {
 
 	if (command === 'help') {
 		message.channel.send({
-			"embed": {
+			embeds: [{
 				"title": `Pinnacle Help`,
 				"description": `Pinnacle's job is simple. It's here to help you pin messages `
 					+ `without all the extra power of the "manage messages" permissions`
@@ -201,7 +220,7 @@ client.on('messageCreate', async message => {
 				"footer": {
 					"text": "Like Pinnacle? Let the creator know!",
 				},
-			},
+			}],
 		});
 	}
 
@@ -214,14 +233,14 @@ client.on('messageCreate', async message => {
 
 			if (affectedRows) {
 				message.channel.send({
-					"embed": {
+					embeds: [{
 						"title": `Changed prefix`,
 						"description": `Successfully updated prefix to \`${args[0]}\``,
 						"color": CONFIG.embed_color,
 						"footer": {
 							"text": "Like Pinnacle? Let the creator know!",
 						},
-					},
+					}],
 				});
 				return;
 			}
@@ -236,26 +255,26 @@ client.on('messageCreate', async message => {
 		});
 		if (userprefixres) {
 			message.channel.send({
-				"embed": {
+				embeds: [{
 					"title": `Pinnacle Prefix`,
 					"description": `Pinnacle's prefix is \`${userprefixres.get('prefix')}\``,
 					"color": CONFIG.embed_color,
 					"footer": {
 						"text": "Like Pinnacle? Let the creator know!",
 					},
-				},
+				}],
 			});
 			return;
 		}
 		message.channel.send({
-			"embed": {
+			embeds: [{
 				"title": `Pinnacle Prefix`,
 				"description": `Pinnacle's prefix is \`${globalPrefix}\``,
 				"color": CONFIG.embed_color,
 				"footer": {
 					"text": "Like Pinnacle? Let the creator know!",
 				},
-			},
+			}],
 		});
 	}
 
@@ -268,14 +287,14 @@ client.on('messageCreate', async message => {
 
 			if (affectedRows) {
 				message.channel.send({
-					"embed": {
+					embeds: [{
 						"title": `Changed emoji`,
 						"description": `Successfully updated emoji to \`${args[0]}\``,
 						"color": CONFIG.embed_color,
 						"footer": {
 							"text": "Like Pinnacle? Let the creator know!",
 						},
-					},
+					}],
 				});
 				return;
 			}
@@ -290,26 +309,26 @@ client.on('messageCreate', async message => {
 		});
 		if (useremojires) {
 			message.channel.send({
-				"embed": {
+				embeds: [{
 					"title": `Pinnacle Prefix`,
 					"description": `Pinnacle's emoji is \`${useremojires.get('emoji')}\``,
 					"color": CONFIG.embed_color,
 					"footer": {
 						"text": "Like Pinnacle? Let the creator know!",
 					},
-				},
+				}],
 			});
 			return;
 		}
 		message.channel.send({
-			"embed": {
+			embeds: [{
 				"title": `Pinnacle Prefix`,
 				"description": `Pinnacle's emoji is \`${globalEmoji}\``,
 				"color": CONFIG.embed_color,
 				"footer": {
 					"text": "Like Pinnacle? Let the creator know!",
 				},
-			},
+			}],
 		});
 	}
 
@@ -325,14 +344,14 @@ client.on('messageCreate', async message => {
 			const arr = customroles.map(rolename => `<@&${rolename.roleid}>`);
 
 			message.channel.send({
-				"embed": {
+				embeds: [{
 					"title": `Pinnacle Roles`,
 					"description": `The following roles can use Pinnacle: ${arr.join(', ')}`,
 					"color": CONFIG.embed_color,
 					"footer": {
 						"text": "Like Pinnacle? Let the creator know!",
 					},
-				},
+				}],
 			});
 		}
 		else {
@@ -355,14 +374,14 @@ client.on('messageCreate', async message => {
 				// if insertion was successful, confirm it to the user
 				if (customroles) {
 					message.channel.send({
-						"embed": {
+						embeds: [{
 							"title": `Pinnacle Roles`,
 							"description": `The role ${guildRole} has been whitelisted.`,
 							"color": CONFIG.embed_color,
 							"footer": {
 								"text": "Like Pinnacle? Let the creator know!",
 							},
-						},
+						}],
 					});
 				}
 			}
@@ -392,14 +411,14 @@ client.on('messageCreate', async message => {
 				// if insertion was successful, confirm it to the user
 				if (customroles) {
 					message.channel.send({
-						"embed": {
+						embeds: [{
 							"title": `Pinnacle Roles`,
 							"description": `The role ${guildRole} has been removed.`,
 							"color": CONFIG.embed_color,
 							"footer": {
 								"text": "Like Pinnacle? Let the creator know!",
 							},
-						},
+						}],
 					});
 				}
 			}
