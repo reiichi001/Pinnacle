@@ -126,12 +126,12 @@ client.on('raw', async event => {
 		if (message.pinned) {
 			// remove the pin
 			message.unpin();
-			message.channel.send("Pinncale has unpinned a message");
+			message.channel.send(`Pinncale has unpinned a message, ${message}`);
 		}
 		else {
 			// add a pin
 			message.pin();
-			message.channel.send("Pinnacle has pinned a message");
+			// message.channel.send(`Pinnacle has pinned a message, ${message}`);
 		}
 	}
 	else {
