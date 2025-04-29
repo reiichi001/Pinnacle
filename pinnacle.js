@@ -75,6 +75,7 @@ client.on('error', console.error);
 
 // This event handles toggling a pin if someone adds/removes the defined emoji for pins
 client.on('raw', async event => {
+	console.log("Got event: " + event);
 	// eslint-disable-next-line no-prototype-builtins
 	if (!events.hasOwnProperty(event.t)) {
 		return;
@@ -121,7 +122,7 @@ client.on('raw', async event => {
 });
 
 // process message commands
-client.on('message', async message => {
+client.on('messageCreate', async message => {
 	if (message.author.bot) {
 		return;
 	}
